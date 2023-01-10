@@ -1,0 +1,1 @@
+# unplugin-detect-update
