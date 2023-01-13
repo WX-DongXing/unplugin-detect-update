@@ -1,4 +1,4 @@
-import type { Options } from './types'
+import type { Options } from './core/types'
 import unplugin from '.'
 
 export default function (options: Options = {}, nuxt: any) {

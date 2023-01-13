@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@7.9.5",
-  "description": "Detect version update for vue app",
+  "description": "Detect version update for web app",
   "license": "MIT",
   "homepage": "https://github.com/WX-DongXing/unplugin-detect-update#readme",
   "repository": {
