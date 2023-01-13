@@ -3,6 +3,7 @@ import { generateVersion } from './utils'
 import type { Options } from './types'
 
 export * from './types'
+export { default as useDetectUpdate } from './useDetectUpdate'
 
 export default createUnplugin<Options | undefined>((options: Options = {}) => ({
   name: 'unplugin-detect-update',
