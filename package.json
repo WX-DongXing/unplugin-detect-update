@@ -29,6 +29,11 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.js"
     },
+    "./useDetectUpdate": {
+      "types": "./dist/useDetectUpdate/index.d.ts",
+      "require": "./dist/useDetectUpdate/index.cjs",
+      "import": "./dist/useDetectUpdate/index.js"
+    },
     "./vite": {
       "types": "./dist/vite.d.ts",
       "require": "./dist/vite.cjs",

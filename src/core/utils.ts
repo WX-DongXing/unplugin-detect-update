@@ -10,9 +10,12 @@ const generatePackageVersion = (): string => {
     const file = readFileSync(resolve('package.json'), { encoding: 'utf-8' })
     const { version } = JSON.parse(file)
     return version ?? '0.0.0'
-  }
-  catch (error) {
-    console.error(`[unplugin-detect-update]: generate package version error ${String(error)}`)
+  } catch (error) {
+    console.error(
+      `[unplugin-detect-update]: generate package version error ${String(
+        error,
+      )}`,
+    )
     return generateTimestamp()
   }
 }
@@ -20,9 +23,12 @@ const generatePackageVersion = (): string => {
 const generateCommitVersion = (): string => {
   try {
     return execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim()
-  }
-  catch (error) {
-    console.error(`[unplugin-detect-update]: generate commit version error ${String(error)}`)
+  } catch (error) {
+    console.error(
+      `[unplugin-detect-update]: generate commit version error ${String(
+        error,
+      )}`,
+    )
     return generateTimestamp()
   }
 }
@@ -32,7 +38,9 @@ const generateCommitVersion = (): string => {
  * @param type
  * @returns
  */
-export const generateVersion = (type: VersionType = 'commit'): Record<string, string> => {
+export const generateVersion = (
+  type: VersionType = 'commit',
+): Record<string, string> => {
   let version = ''
   switch (type) {
     case 'commit':
@@ -51,4 +59,3 @@ export const generateVersion = (type: VersionType = 'commit'): Record<string, st
 
   return { version }
 }
-
