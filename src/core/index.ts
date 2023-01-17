@@ -7,23 +7,14 @@ export * from './types'
 export default createUnplugin<Options | undefined>((options: Options = {}) => ({
   name: 'unplugin-detect-update',
   apply: 'build',
-  vite: {
-    generateBundle() {
-      const { fileName = 'version.json', type = 'commit', extra = {} } = options
-
-      const version = generateVersion(type)
-
-      const source = JSON.stringify(
-        Object.assign({}, version, extra),
-        null,
-        '  ',
-      )
-
-      this.emitFile({
-        type: 'asset',
-        fileName,
-        source,
-      })
-    },
+  buildEnd() {
+    const { fileName = 'version.json', type = 'commit', extra = {} } = options
+    const version = generateVersion(type)
+    const source = JSON.stringify(Object.assign({}, version, extra), null, '  ')
+    this.emitFile({
+      type: 'asset',
+      fileName,
+      source,
+    })
   },
 }))
