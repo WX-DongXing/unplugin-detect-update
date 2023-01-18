@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [
     Inspect(),
     Unplugin({
-      worker: true,
+      fileName: 'detect-update-version.json',
+      worker: {
+        enable: true,
+        fileName: 'detect-update-worker.js',
+      },
     }),
   ],
 })

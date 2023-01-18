@@ -12,22 +12,30 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
     worker = false,
   } = options
 
-  const { enable, fileName: workerFileName } = resolveWorkerOption(worker)
+  const { enable = false, fileName: workerFileName = 'worker.js' } =
+    resolveWorkerOption(worker)
 
   let workerPath = ''
 
   return {
     name: 'unplugin-detect-update',
     apply: 'build',
-    async load(id) {
-      if (id.includes('unplugin-detect-update')) {
-        // find worker.js path by import useDetectUpdate
-        workerPath = id.replace(
-          /(.+unplugin-detect-update)(?:.+)/,
-          '$1/dist/worker/index.js',
-        )
+    transform(code: string, id: string) {
+      if (!id.includes('useDetectUpdate')) return
+
+      workerPath = id.replace(
+        /(.+unplugin-detect-update)(?:.+)/,
+        '$1/dist/worker/index.js',
+      )
+
+      const generateCode = code
+        .replace(/version\.json/, fileName)
+        .replace(/worker\.js/, workerFileName)
+
+      return {
+        code: generateCode,
+        id,
       }
-      return null
     },
     buildEnd() {
       const version = generateVersion(type)
@@ -44,10 +52,12 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
 
       if (enable && workerPath) {
         const source = readWorkerFile(workerPath)
+        const workerSource = source.replace(/version\.json/, fileName)
+
         this.emitFile({
           type: 'asset',
           fileName: workerFileName,
-          source,
+          source: workerSource,
         })
       }
     },

@@ -5,6 +5,7 @@
     "no-console": "off",
     "brace-style": "off",
     "@typescript-eslint/brace-style": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "operator-linebreak": "off"
   }
 }
