@@ -1,7 +1,11 @@
 import type { Options } from 'tsup'
 
 export default <Options>{
-  entryPoints: ['src/*.ts', 'src/useDetectUpdate/index.ts'],
+  entryPoints: [
+    'src/*.ts',
+    'src/useDetectUpdate/index.ts',
+    'src/worker/index.ts',
+  ],
   clean: true,
   format: ['cjs', 'esm'],
   dts: true,

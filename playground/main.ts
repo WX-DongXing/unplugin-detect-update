@@ -3,7 +3,10 @@ import useDetectUpdate from '../dist/useDetectUpdate'
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
 
 const { onUpdate } = useDetectUpdate({
-  ms: 10000,
+  immediate: false,
+  worker: true,
+  ms: 3000,
+  trigger: ['visibility'],
 })
 
 onUpdate((json: any) => {

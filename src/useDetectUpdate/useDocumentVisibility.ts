@@ -1,7 +1,7 @@
 import createEventHook from './createEventHook'
 import type { EventHookOn, Trigger } from './types'
 
-interface UseDocumentVisibilityReturn {
+export interface UseDocumentVisibilityReturn {
   isVisibility: boolean
   onChange: EventHookOn<boolean>
 }

@@ -5,7 +5,8 @@ import type {
 } from './types'
 import createEventHook from './createEventHook'
 import useDocumentVisibility from './useDocumentVisibility'
-import useWindowFocus from './useWindowFoucs'
+import useWindowFocus from './useWindowFocus'
+import useWebWorker from './useWebWorker'
 
 let timer: ReturnType<typeof setInterval> | null = null
 
@@ -13,15 +14,31 @@ export default function useDetectUpdate(
   options: UseDetectUpdateOptions = {},
 ): UseDetectUpdateReturn {
   const {
-    autoStart = true,
+    immediate = true,
     worker = false,
     ms = 3 * 1000,
     trigger = [],
   } = options
 
-  let allowDetect = autoStart
+  let allowDetect = immediate
 
   const event = createEventHook()
+
+  const { post, onMessage } = useWebWorker(worker, '/worker.js')
+
+  onMessage(data => {
+    if (data.signal === 'version') {
+      const store = localStorage.getItem('detect-update-store') || '{}'
+      const { version } = JSON.parse(store)
+      if (data.json) {
+        const shouldUpdate = data?.json?.version !== version
+        if (shouldUpdate) {
+          event.trigger(data?.json)
+          localStorage.setItem('detect-update-store', JSON.stringify(data.json))
+        }
+      }
+    }
+  })
 
   const { onChange: onVisibilityChange } = useDocumentVisibility(trigger)
 
@@ -42,7 +59,7 @@ export default function useDetectUpdate(
       if (timer) clearInterval(timer)
       timer = setInterval(() => detect(), ms)
     } else {
-      console.log('use worker')
+      post?.({ signal: 'start', options: { ms } })
     }
   }
 
@@ -55,9 +72,7 @@ export default function useDetectUpdate(
       if (shouldUpdate) event.trigger(json)
     } catch (error) {
       console.error(
-        `[unplugin-detect-update]: An error occurred during detect: ${String(
-          error,
-        )}`,
+        `[unplugin-detect-update]: An error occurred during detect: ${error}`,
       )
     }
   }
@@ -72,15 +87,15 @@ export default function useDetectUpdate(
       const json = await data.json()
       const store = localStorage.getItem('detect-update-store') || '{}'
       const { version } = JSON.parse(store)
-      localStorage.setItem('detect-update-store', JSON.stringify(json))
+      const shouldUpdate = json?.version !== version
+      if (shouldUpdate)
+        localStorage.setItem('detect-update-store', JSON.stringify(json))
       return {
-        shouldUpdate: json?.version !== version,
+        shouldUpdate,
         json,
       }
     } catch (error) {
-      console.error(
-        `[unplugin-detect-update]: Fetch version error: ${String(error)}`,
-      )
+      console.error(`[unplugin-detect-update]: Fetch version error: ${error}`)
       return {
         shouldUpdate: false,
       }
@@ -89,10 +104,15 @@ export default function useDetectUpdate(
 
   function cancel() {
     allowDetect = false
-    if (timer) clearTimeout(timer)
+
+    if (!worker) {
+      if (timer) clearTimeout(timer)
+    } else {
+      post?.({ signal: 'cancel' })
+    }
   }
 
-  autoStart && start()
+  immediate && start()
 
   return {
     start,

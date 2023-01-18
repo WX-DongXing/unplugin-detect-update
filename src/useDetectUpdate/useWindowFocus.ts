@@ -1,7 +1,7 @@
 import createEventHook from './createEventHook'
 import type { EventHookOn, Trigger } from './types'
 
-interface UseWindowFocusReturn {
+export interface UseWindowFocusReturn {
   isFocus: boolean
   onChange: EventHookOn<boolean>
 }

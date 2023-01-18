@@ -1,7 +1,7 @@
 export type Trigger = 'focus' | 'visibility'
 
 export interface UseDetectUpdateOptions {
-  autoStart?: boolean
+  immediate?: boolean
   worker?: boolean
   ms?: number
   trigger?: Trigger[]
