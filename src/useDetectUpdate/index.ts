@@ -20,11 +20,13 @@ export default function useDetectUpdate(
     trigger = [],
   } = options
 
+  const isDev = process.env.NODE_ENV === 'development'
+
   let allowDetect = immediate
 
   const event = createEventHook()
 
-  const { post, onMessage } = useWebWorker(worker, '/worker.js')
+  const { post, onMessage } = useWebWorker(!isDev && worker, '/worker.js')
 
   onMessage(data => {
     if (data.signal === 'version') {
@@ -83,7 +85,9 @@ export default function useDetectUpdate(
    */
   async function checkUpdate(): Promise<CheckUpdateReturn> {
     try {
-      const data = await fetch(`/version.json?t=${Date.now()}`)
+      const data = await fetch(
+        `/${isDev ? 'package.json' : 'version.json'}?t=${Date.now()}`,
+      )
       const json = await data.json()
       const store = localStorage.getItem('detect-update-store') || '{}'
       const { version } = JSON.parse(store)

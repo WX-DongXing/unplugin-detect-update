@@ -3,29 +3,27 @@ import { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
 import type { VersionType, WorkerOption } from './types'
 
-export const generateTimestamp = (): string => Date.now().toString()
+export const getTimestampVersion = (): string => Date.now().toString()
 
-const generatePackageVersion = (): string => {
+export const getPackageVersion = (): string => {
   try {
     const file = readFileSync(resolve('package.json'), { encoding: 'utf-8' })
     const { version } = JSON.parse(file)
     return version ?? '0.0.0'
   } catch (error) {
     console.error(
-      `[unplugin-detect-update]: generate package version error ${error}`,
+      `[unplugin-detect-update]: get package version error ${error}`,
     )
-    return generateTimestamp()
+    return getTimestampVersion()
   }
 }
 
-const generateCommitVersion = (): string => {
+export const getCommitVersion = (): string => {
   try {
     return execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim()
   } catch (error) {
-    console.error(
-      `[unplugin-detect-update]: generate commit version error ${error}`,
-    )
-    return generateTimestamp()
+    console.error(`[unplugin-detect-update]: get commit version error ${error}`)
+    return getTimestampVersion()
   }
 }
 
@@ -40,16 +38,16 @@ export const generateVersion = (
   let version = ''
   switch (type) {
     case 'commit':
-      version = generateCommitVersion()
+      version = getCommitVersion()
       break
     case 'package':
-      version = generatePackageVersion()
+      version = getPackageVersion()
       break
     case 'timestamp':
-      version = generateTimestamp()
+      version = getTimestampVersion()
       break
     default:
-      version = generateTimestamp()
+      version = getTimestampVersion()
       break
   }
 
