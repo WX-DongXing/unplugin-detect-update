@@ -9,7 +9,7 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
     fileName = 'version.json',
     type = 'commit',
     extra = {},
-    worker = false,
+    worker = true,
   } = options
 
   const { enable = false, fileName: workerFileName = 'worker.js' } =
@@ -21,7 +21,7 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
     name: 'unplugin-detect-update',
     apply: 'build',
     transform(code: string, id: string) {
-      if (!id.includes('useDetectUpdate')) return
+      if (!id.includes('unplugin-detect-update/dist/useDetectUpdate')) return
 
       workerPath = id.replace(
         /(.+unplugin-detect-update)(?:.+)/,

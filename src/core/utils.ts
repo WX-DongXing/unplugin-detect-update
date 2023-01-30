@@ -79,5 +79,9 @@ export const resolveWorkerOption = (
 ): WorkerOption => {
   if (typeof option === 'boolean')
     return { enable: option, fileName: 'worker.js' }
-  return option
+  return {
+    enable: true,
+    fileName: 'worker.js',
+    ...option,
+  }
 }
