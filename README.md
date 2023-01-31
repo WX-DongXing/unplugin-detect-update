@@ -123,6 +123,23 @@ onUpdate(val => {
 })
 ```
 
+The `version` will be added to the `body` in each html file after build, and also stored in session, key was `detect-update-store`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body version="0.1.0">
+    <div id="app"></div>
+    ...
+  </body>
+</html>
+```
+
 ## Configuration
 
 ```ts
@@ -130,7 +147,7 @@ onUpdate(val => {
 DetectUpdate({
   // the name of generated version record file
   fileName: 'version.json',
-  // the type of generated version,
+  // the type of generated version
   type: 'commit',
   worker: {
     // whether to generate worker file

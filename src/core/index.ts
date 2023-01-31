@@ -21,20 +21,32 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
     name: 'unplugin-detect-update',
     apply: 'build',
     transform(code: string, id: string) {
-      if (!id.includes('unplugin-detect-update')) return
+      if (id.includes('.html')) {
+        const { version } = generateVersion(type)
+        const html = code.replace(/(<body.*?>)/, body =>
+          body.replace(/>/, ` version="${version}">`),
+        )
 
-      workerPath = id.replace(
-        /(.+unplugin-detect-update)(?:.+)/,
-        '$1/dist/worker.js',
-      )
+        return {
+          code: html,
+          id,
+        }
+      }
 
-      const generateCode = code
-        .replace(/version\.json/, fileName)
-        .replace(/worker\.js/, workerFileName)
+      if (id.includes('unplugin-detect-update')) {
+        workerPath = id.replace(
+          /(.+unplugin-detect-update)(?:.+)/,
+          '$1/dist/worker.js',
+        )
 
-      return {
-        code: generateCode,
-        id,
+        const generateCode = code
+          .replace(/version\.json/, fileName)
+          .replace(/worker\.js/, workerFileName)
+
+        return {
+          code: generateCode,
+          id,
+        }
       }
     },
     buildEnd() {
