@@ -176,7 +176,7 @@ export interface Options {
    */
   fileName?: string
   /**
-   * The type of generated version
+   * The type of generated version, will be set to 'package' in development mode, and set the 'version' field in package.json under the current directory to the version
    *
    * @default commit
    */
@@ -211,7 +211,7 @@ export interface UseDetectUpdateOptions {
    */
   immediate?: boolean
   /**
-   * Whether use worker
+   * Whether use worker, not work in development mode
    * @default false
    */
   worker?: boolean
