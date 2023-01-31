@@ -1,7 +1,7 @@
 {
   "name": "unplugin-detect-update",
   "type": "module",
-  "version": "0.1.1-beta.0",
+  "version": "0.1.1-beta.1",
   "packageManager": "pnpm@7.9.5",
   "description": "Detect version update for web app",
   "license": "MIT",
