@@ -109,7 +109,7 @@ module.exports = {
 ## Usage
 
 ```ts
-import useDetectUpdate from 'unplugin-detect-update/useDetectUpdate'
+import { useDetectUpdate } from 'unplugin-detect-update/hooks'
 
 const { start, cancel, detect, onUpdate } = useDetectUpdate({
   immediate: true,

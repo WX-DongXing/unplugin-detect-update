@@ -1,4 +1,4 @@
-import useDetectUpdate from '../dist/useDetectUpdate'
+import { useDetectUpdate } from '../dist/hooks'
 
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
 

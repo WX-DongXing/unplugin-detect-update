@@ -21,11 +21,11 @@ export default createUnplugin<Options | undefined>((options: Options = {}) => {
     name: 'unplugin-detect-update',
     apply: 'build',
     transform(code: string, id: string) {
-      if (!id.includes('unplugin-detect-update/dist/useDetectUpdate')) return
+      if (!id.includes('unplugin-detect-update')) return
 
       workerPath = id.replace(
         /(.+unplugin-detect-update)(?:.+)/,
-        '$1/dist/worker/index.js',
+        '$1/dist/worker.js',
       )
 
       const generateCode = code

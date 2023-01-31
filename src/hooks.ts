@@ -2,15 +2,15 @@ import type {
   CheckUpdateReturn,
   UseDetectUpdateOptions,
   UseDetectUpdateReturn,
-} from './types'
-import createEventHook from './createEventHook'
-import useDocumentVisibility from './useDocumentVisibility'
-import useWindowFocus from './useWindowFocus'
-import useWebWorker from './useWebWorker'
+} from './composable/types'
+import createEventHook from './composable/createEventHook'
+import useDocumentVisibility from './composable/useDocumentVisibility'
+import useWindowFocus from './composable/useWindowFocus'
+import useWebWorker from './composable/useWebWorker'
 
 let timer: ReturnType<typeof setInterval> | null = null
 
-export default function useDetectUpdate(
+export function useDetectUpdate(
   options: UseDetectUpdateOptions = {},
 ): UseDetectUpdateReturn {
   const {

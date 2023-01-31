@@ -20,8 +20,7 @@
     "rollup",
     "Detect",
     "version",
-    "update",
-    "vue"
+    "update"
   ],
   "exports": {
     ".": {
@@ -29,10 +28,10 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.js"
     },
-    "./useDetectUpdate": {
-      "types": "./dist/useDetectUpdate/index.d.ts",
-      "require": "./dist/useDetectUpdate/index.cjs",
-      "import": "./dist/useDetectUpdate/index.js"
+    "./hooks": {
+      "types": "./dist/hooks.d.ts",
+      "require": "./dist/hooks.cjs",
+      "import": "./dist/hooks.js"
     },
     "./vite": {
       "types": "./dist/vite.d.ts",
