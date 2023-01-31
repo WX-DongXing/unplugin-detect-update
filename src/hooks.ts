@@ -59,6 +59,7 @@ export function useDetectUpdate(
 
     if (!worker) {
       if (timer) clearInterval(timer)
+      detect()
       timer = setInterval(() => detect(), ms)
     } else {
       post?.({ signal: 'start', options: { ms } })
@@ -89,11 +90,17 @@ export function useDetectUpdate(
         `/${isDev ? 'package.json' : 'version.json'}?t=${Date.now()}`,
       )
       const json = await data.json()
-      const store = localStorage.getItem('detect-update-store') || '{}'
+      const store = sessionStorage.getItem('detect-update-store')
+      if (!store) {
+        sessionStorage.setItem('detect-update-store', JSON.stringify(json))
+        return {
+          shouldUpdate: false,
+        }
+      }
       const { version } = JSON.parse(store)
       const shouldUpdate = json?.version !== version
       if (shouldUpdate)
-        localStorage.setItem('detect-update-store', JSON.stringify(json))
+        sessionStorage.setItem('detect-update-store', JSON.stringify(json))
       return {
         shouldUpdate,
         json,

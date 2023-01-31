@@ -12,6 +12,7 @@ let timer: ReturnType<typeof setInterval> | null = null
 function start(options: Options = {}) {
   const { ms = 3 * 1000 } = options
   if (timer) clearInterval(timer)
+  detect()
   timer = setInterval(() => detect(), ms)
 }
 
