@@ -16,7 +16,7 @@ export default function useDetectUpdate(
   const {
     immediate = true,
     worker = false,
-    ms = 3 * 1000,
+    ms = 5 * 60000,
     trigger = [],
   } = options
 
